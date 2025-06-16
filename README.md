@@ -8,7 +8,7 @@
 
 control + C
 
-
+./gradlew clean build
 
 テストパス
 
