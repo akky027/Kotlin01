@@ -6,9 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails
 data class FirebaseUserDetails(
     private val uid: String,
     private val email: String?,
-    private val authorities: Collection<GrantedAuthority>
+    private val authorities: Collection<GrantedAuthority>,
 ) : UserDetails {
-
     override fun getAuthorities(): Collection<GrantedAuthority> = authorities
 
     override fun getPassword(): String? = null // Firebase認証ではパスワードは使用しない

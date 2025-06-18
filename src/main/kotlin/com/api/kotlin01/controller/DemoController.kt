@@ -9,14 +9,16 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class DemoController {
-
     @GetMapping("/public/hello")
     fun publicHello(): String {
         return "Hello from public endpoint!"
     }
 
+//    @GetMapping("/protected/hello")
     @GetMapping("/secure/hello")
-    fun secureHello(@AuthenticationPrincipal currentUser: FirebaseUserDetails): String {
+    fun secureHello(
+        @AuthenticationPrincipal currentUser: FirebaseUserDetails,
+    ): String {
         // @AuthenticationPrincipal を使って認証済みユーザーの詳細情報を取得
         return "Hello from secure endpoint, ${currentUser.username}!"
     }
