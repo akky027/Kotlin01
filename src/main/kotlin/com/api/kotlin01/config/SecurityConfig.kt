@@ -15,9 +15,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val firebaseAuthenticationFilter: FirebaseAuthenticationFilter
+    private val firebaseAuthenticationFilter: FirebaseAuthenticationFilter,
 ) {
-
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
@@ -26,6 +25,7 @@ class SecurityConfig(
             .authorizeHttpRequests { authz ->
                 authz
                     .requestMatchers("/public/**").permitAll() // パブリックエンドポイント
+                    // 他のパスは認証が必要
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ADMINロールが必要なエンドポイント
                     .anyRequest().authenticated() // その他のすべてのリクエストは認証が必要
             }

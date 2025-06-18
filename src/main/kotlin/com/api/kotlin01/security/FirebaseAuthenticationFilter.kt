@@ -18,14 +18,13 @@ import java.util.*
 
 @Component
 class FirebaseAuthenticationFilter : OncePerRequestFilter() {
-
     private val logger = LoggerFactory.getLogger(FirebaseAuthenticationFilter::class.java)
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         val authorizationHeader = request.getHeader("Authorization")
 
@@ -52,14 +51,16 @@ class FirebaseAuthenticationFilter : OncePerRequestFilter() {
 
             val userDetails = FirebaseUserDetails(uid, email, authorities)
 
-            val authentication = UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.authorities
-            )
+            val authentication =
+                UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.authorities,
+                )
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
 
             SecurityContextHolder.getContext().authentication = authentication
 //            logger.info("Successfully authenticated user: {}", uid)
-
         } catch (e: FirebaseAuthException) {
 //            logger.warn("Firebase ID Token verification failed", e)
             SecurityContextHolder.clearContext() // 認証情報をクリア
